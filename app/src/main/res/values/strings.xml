@@ -5,4 +5,7 @@
 all the videos in this device.Allow access and we are ready to go.</string>
     <string name="hello_world">Hello World</string>
     <string name="allow_access">Allow Access</string>
+    <string name="folder_name">Folder Name</string>
+    <string name="folder_path">Folder Path</string>
+    <string name="_5_videos">5 Videos</string>
 </resources>
