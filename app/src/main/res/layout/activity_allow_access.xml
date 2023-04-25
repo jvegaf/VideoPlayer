@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +14,8 @@
         android:layout_height="170dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:src="@drawable/allowaccess" />
+        android:src="@drawable/allowaccess"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/text1"
@@ -23,26 +23,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/allowicon"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="text"
+        android:text="@string/text1"
         android:textColor="@color/white"
         android:textSize="30sp" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@id/text2"
-        android:text="text2"
+        android:text="@string/text2"
         android:layout_below="@id/text1"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_centerHorizontal="true" />
     <Button
         android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Allow Access"
+        android:text="@string/allow_access"
         android:layout_alignParentBottom="true"
         android:textAllCaps="true"
         android:layout_marginBottom="20dp"
