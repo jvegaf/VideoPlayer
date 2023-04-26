@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> allFolderList = new ArrayList<>();
     RecyclerView recyclerView;
     VideoFoldersAdapter adapter;
-
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
         }
         recyclerView = findViewById(R.id.folders_rv);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_folders);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            showFolders();
+            swipeRefreshLayout.setRefreshing(false);
+        });
         showFolders();
     }
 
@@ -56,27 +62,28 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<MediaFiles> mediaFilesArrayList = new ArrayList<>();
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        if (cursor != null && cursor.moveToNext()) {
-            do {
-                @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
-                @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
-                @SuppressLint("Range") String displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
-                @SuppressLint("Range") String size = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE));
-                @SuppressLint("Range") String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
-                @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
-                @SuppressLint("Range") String dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
+        try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
+            if (cursor != null && cursor.moveToNext()) {
+                do {
+                    @SuppressLint("Range") String id = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media._ID));
+                    @SuppressLint("Range") String title = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.TITLE));
+                    @SuppressLint("Range") String displayName = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
+                    @SuppressLint("Range") String size = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.SIZE));
+                    @SuppressLint("Range") String duration = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DURATION));
+                    @SuppressLint("Range") String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    @SuppressLint("Range") String dateAdded = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATE_ADDED));
 
-                MediaFiles file = new MediaFiles(id, title, displayName, size, duration, path, dateAdded);
+                    MediaFiles file = new MediaFiles(id, title, displayName, size, duration, path, dateAdded);
 
-                int index = path.lastIndexOf("/");
-                String subString = path.substring(0, index);
-                if (!allFolderList.contains(subString)) {
-                    allFolderList.add(subString);
-                }
+                    int index = path.lastIndexOf("/");
+                    String subString = path.substring(0, index);
+                    if (!allFolderList.contains(subString)) {
+                        allFolderList.add(subString);
+                    }
 
-                mediaFilesArrayList.add(file);
-            } while (cursor.moveToNext());
+                    mediaFilesArrayList.add(file);
+                } while (cursor.moveToNext());
+            }
         }
         return mediaFilesArrayList;
     }
