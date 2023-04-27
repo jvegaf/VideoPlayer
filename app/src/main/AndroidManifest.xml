@@ -20,6 +20,9 @@
         android:theme="@style/Theme.VideoPlayer"
         tools:targetApi="31">
         <activity
+            android:name=".VideoPlayerActivity"
+            android:exported="false" />
+        <activity
             android:name=".VideoFilesActivity"
             android:exported="false" />
         <activity
