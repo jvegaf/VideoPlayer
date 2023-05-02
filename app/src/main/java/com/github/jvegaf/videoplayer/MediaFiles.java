@@ -1,6 +1,11 @@
 package com.github.jvegaf.videoplayer;
 
-public class MediaFiles {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class MediaFiles implements Parcelable {
     private String id;
     private String title;
     private String displayName;
@@ -73,5 +78,15 @@ public class MediaFiles {
 
     public void setDateAdded(String dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+
     }
 }
